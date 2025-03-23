@@ -1,5 +1,5 @@
-import { InvalidaFileSize } from '@/infra/app/errors/invalid-file-size'
-import { MissingFile } from '@/infra/app/errors/missing-file'
+import { InvalidaFileSize } from '@/infra/app/usecases/errors/invalid-file-size'
+import { MissingFile } from '@/infra/app/usecases/errors/missing-file'
 import { uploadImage } from '@/infra/app/usecases/upload-image'
 import { db } from '@/infra/db'
 import { schema } from '@/infra/db/schemas'
