@@ -7,5 +7,33 @@ services:
       - POSTGRESQL_USERNAME=docker
       - POSTGRESQL_PASSWORD=docker
       - POSTGRESQL_DATABASE=upload
+    networks:
+      - widget-network
+      - db-network
     volumes:
       - './docker:/docker-entrypoint-initdb.d'
+
+  app:
+      build: .
+      restart: unless-stopped
+      depends_on:
+        - db
+      container_name: widget-server
+      ports:
+        - 3000:3333
+      environment:
+        - CLOUDFLARE_ACCESS_KEY_ID=$CLOUDFLARE_ACCESS_KEY_ID
+        - CLOUDFLARE_SECRET_ACCESS_KEY=$CLOUDFLARE_SECRET_ACCESS_KEY
+        - CLOUDFLARE_BUCKET=$CLOUDFLARE_BUCKET
+        - CLOUDFLARE_ACCOUNT_ID=$CLOUDFLARE_ACCOUNT_ID
+        - CLOUDFLARE_PUBLIC_URL=$CLOUDFLARE_PUBLIC_URL
+      networks:
+        - widget-network
+
+  volumes:
+    db:
+  networks:
+    widget-network:
+      driver: bridge
+    db-network:
+      driver: bridge
