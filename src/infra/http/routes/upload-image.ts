@@ -14,7 +14,7 @@ export const uploadImageRoute: FastifyPluginAsyncZod = async server => {
         tags: ['upload'],
         consumes: ['multipart/form-data'],
         response: {
-          201: z.null().describe('Image uploaded'),
+          201: z.object({ url: z.string() }).describe('Image uploaded'),
           400: z.object({ message: z.string() }),
         },
       },
@@ -39,7 +39,7 @@ export const uploadImageRoute: FastifyPluginAsyncZod = async server => {
 
       if (isRight(result)) {
         console.log(unwrapEither(result))
-        return reply.status(201).send()
+        return reply.status(201).send(unwrapEither(result))
       }
 
       const error = unwrapEither(result)
