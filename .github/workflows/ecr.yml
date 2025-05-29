@@ -105,3 +105,12 @@ jobs:
           task-definition: .aws/task-definition.json
           container-name: widget-server
           image: ${{ steps.login-ecr.outputs.registry }}/${{ vars.ECR_REPOSITORY }}:${{ steps.generate-tag.outputs.sha }}
+
+      - name: Deploy Amazon ECS service
+        id: deploy-ecs-service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render-task-definition.outputs.task-definition }}
+          service: rocketseat-widget-server-service-wk964b43
+          cluster: lucky-parrot-eadxhk
+          wait-for-service-stability: true
